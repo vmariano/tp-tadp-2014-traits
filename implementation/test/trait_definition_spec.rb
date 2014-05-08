@@ -2,51 +2,46 @@ require 'rspec'
 require '../src/class'
 require '../src/trait'
 
-describe 'Using trait' do
+describe 'Single trait implemented on a single class' do
 
-  #Defino mi trait
+  #Trait definition
   Trait.define do | current_trait |
-
-    current_trait.name(:MiTrait)
+    current_trait.name(:MyTrait)
 
     current_trait.add_method :method2 do
-      "hola"
+      "Hello"
     end
 
   end
 
+  #Implement trait over my class
+  class ASingleClass
 
-  #implemento sobre mi clase
-  class SingleClass
-
-    uses MiTrait
+    uses MyTrait
 
     def method1
-      "munro"
+      " munro"
     end
 
   end
 
-  implement_trait = SingleClass.new
+  #Generate an instance
+  an_object_with_a_trait = ASingleClass.new
 
-  it 'A class que implementa el trait tiene el mensaje del trait' do
-    (SingleClass.received_message? :method2) == true
-  end
-
-  it 'Should implement object method' do
-    implement_trait.method1 == "munro"
+  it 'Object should respond to the message of the trait' do
+    (an_object_with_a_trait.received_message? :method2) == true
   end
 
 end
 
-describe 'Using trait with 2 methods' do
+describe 'Implement a trait with 2 messages over a class' do
 
   Trait.define do | current_trait |
 
-    current_trait.name(:TraitConDosMetodos)
+    current_trait.name(:TraitWithTwoMethods)
 
     current_trait.add_method :methodA do
-      "hola"
+      "Hello"
     end
 
     current_trait.add_method :methodB do
@@ -55,30 +50,28 @@ describe 'Using trait with 2 methods' do
 
   end
 
-  class AClass
-    uses TraitConDosMetodos
-
+  class ASingleClass
+    uses TraitWithTwoMethods
 
   end
 
-  object_with_two_traits = AClass.new
+  object_with_a_trait = ASingleClass.new
 
-  it 'Una clase que implementa un trait con 2 metodos, entiende los 2' do
-    (object_with_two_traits.received_message? :methodA) == true
-    (object_with_two_traits.received_message? :methodB) == true
+  it 'Object should respond to the all messages added by the traits' do
+    (object_with_a_trait.received_message? :methodA) == true
+    (object_with_a_trait.received_message? :methodB) == true
   end
 
 end
 
-
-describe 'Using trait with 3 methods' do
+describe 'Implement 2 different traits in the same class' do
 
   Trait.define do | current_trait |
 
-    current_trait.name(:TraitConDosMetodos)
+    current_trait.name(:TraitWithTwoMethods)
 
     current_trait.add_method :methodA do
-      "hola"
+      "Hello"
     end
 
     current_trait.add_method :methodB do
@@ -89,24 +82,22 @@ describe 'Using trait with 3 methods' do
 
   Trait.define do | current_trait |
 
-    current_trait.name(:TraitConUnMetodo)
+    current_trait.name(:TraitWithAMethod)
 
     current_trait.add_method :method1 do
-      "hola"
+      "Hello"
     end
 
   end
 
-
-  #implemento sobre mi clase
   class AClass
-    uses TraitConDosMetodos, TraitConUnMetodo
+    uses TraitWithTwoMethods, TraitWithAMethod
 
   end
 
   implement_trait = AClass.new
 
-  it 'Una clase que implementa 1 trait con 1 metodo, y otro trait con 2 metodos y entiende los 3 metodos' do
+  it 'A Object should understand all methods of different traits' do
     (implement_trait.received_message? :method1) == true
     (implement_trait.received_message? :methodA) == true
     (implement_trait.received_message? :methodB) == true
