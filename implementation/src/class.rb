@@ -1,7 +1,12 @@
 class Class
 
-  def uses(the_trait)
-    self.define_singleton_method(the_trait.selector, the_trait.metodo)
+  def uses(*the_traits)
+
+    the_traits.each do | the_trait |
+      the_trait.method_dictionary.each do |selector, method|
+        self.define_singleton_method(selector, method)
+      end
+    end
   end
 
 end
