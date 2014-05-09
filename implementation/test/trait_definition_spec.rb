@@ -105,7 +105,7 @@ describe 'Implement 2 different traits in the same class' do
 
 end
 
-describe 'Implement 2 different traits in the same class' do
+describe 'Handling selectors names collitions' do
 
     Trait.define do | current_trait |
 
