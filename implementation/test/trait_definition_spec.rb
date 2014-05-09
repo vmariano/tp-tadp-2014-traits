@@ -104,3 +104,36 @@ describe 'Implement 2 different traits in the same class' do
   end
 
 end
+
+describe 'Implement 2 different traits in the same class' do
+
+    Trait.define do | current_trait |
+
+      current_trait.name(:TraitWithAMethod)
+
+      current_trait.add_method :methodA do
+        "Hello 1"
+      end
+
+    end
+
+    Trait.define do | current_trait |
+
+      current_trait.name(:TraitWithAMethod2)
+
+      current_trait.add_method :methodA do
+        "Hello 2"
+      end
+
+    end
+
+  it 'Should raise exception if exist a selector name collision' do
+
+    expect {
+      class AClass
+          uses TraitWithAMethod, TraitWithAMethod2
+      end
+    }.to raise_error(DuplicatedSelectorName)
+  end
+
+end
