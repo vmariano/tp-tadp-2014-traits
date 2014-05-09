@@ -136,4 +136,19 @@ describe 'Implement 2 different traits in the same class' do
     }.to raise_error(DuplicatedSelectorName)
   end
 
+  it 'Should rise exception if class selector name collisions with a trait s selector name'  do
+    expect {
+      class AClass
+
+        uses TraitWithAMethod
+
+        def methodA
+          'Hello Class'
+        end
+      end
+
+    }.to raise_error(DuplicatedSelectorName)
+
+  end
+
 end
